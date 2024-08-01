@@ -4,5 +4,6 @@ export default defineConfig({
     ssr: true,
     server: {
         preset: "github-pages",
-    }
+        baseURL: "/tm-block-roulette/"
+    },
 });
