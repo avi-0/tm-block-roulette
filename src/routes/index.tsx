@@ -37,7 +37,7 @@ export default function Home() {
   };
 
   return (
-    <div class="bg-slate-100 h-screen p-4 flex flex-col items-center gap-2 overflow-auto">
+    <div class="bg-slate-100 text-black h-screen p-4 flex flex-col items-center gap-2 overflow-auto">
       <h1 class="font-bold text-lg text-center">Trackmania Block Roulette</h1>
 
       <div class="flex gap-2">
