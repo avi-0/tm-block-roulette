@@ -21,6 +21,7 @@ jobs:
       - run: npm run build
         env:
           NITRO_PRESET: github_pages
+          BASE_PATH: "/tm-block-roulette/"
 
       - name: create .nojekyll
         run: touch .output/public/.nojekyll
