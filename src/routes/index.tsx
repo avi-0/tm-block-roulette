@@ -32,7 +32,7 @@ export default function Home() {
     setList(
       Array.from({ length: number() }, () => {
         return imageList[Math.floor(Math.random() * imageList.length)];
-      })
+      }).toSorted()
     );
   };
 

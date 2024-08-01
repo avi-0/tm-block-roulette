@@ -2,7 +2,7 @@
   "name": "example-with-tailwindcss",
   "type": "module",
   "scripts": {
-    "dev": "vinxi dev",
+    "dev": "cross-env BASE_PATH=\"/tm-block-roulette/\" vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start"
   },
@@ -17,5 +17,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
