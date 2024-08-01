@@ -17,7 +17,7 @@ const BlockImage: Component<{
     <Suspense>
       <img
         class="bg-white rounded-md shadow-md size-16 p-1 box-content"
-        src={`${import.meta.env.BASE_URL}/images/${props.image}`}
+        src={`/images/${props.image}`}
       />
     </Suspense>
   );
