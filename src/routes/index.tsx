@@ -9,16 +9,25 @@ import {
 } from "solid-js";
 import Counter from "~/components/Counter";
 import { imageList } from "~/images";
+import { blockPaths } from "~/inventory_paths";
+
+function getPath(imageName: string): string {
+  return blockPaths[imageName.replace(/(\.EDClassic|\.Item)\.webp$/, "")];
+}
 
 const BlockImage: Component<{
   image: string;
+  label?: string;
 }> = (props) => {
   return (
     <Suspense>
-      <img
-        class="bg-white rounded-md shadow-md size-16 p-1 box-content"
-        src={`/tm-block-roulette/images/${props.image}`}
-      />
+      <div class="w-18 hover:-translate-y-1 transition-all flex flex-col items-center gap-1">
+        <img
+          class="bg-white rounded-md shadow-md p-1 hover:shadow-lg transition-all"
+          src={`/tm-block-roulette/images/${props.image}`}
+        />
+        <div class="text-center text-xs select-none">{props.label}</div>
+      </div>
     </Suspense>
   );
 };
@@ -37,7 +46,7 @@ export default function Home() {
   };
 
   return (
-    <div class="bg-slate-100 text-black h-screen p-4 flex flex-col items-center gap-2 overflow-auto">
+    <div class="bg-slate-200 text-black h-screen p-4 flex flex-col items-center gap-2 overflow-auto">
       <h1 class="font-bold text-lg text-center">Trackmania Block Roulette</h1>
 
       <div class="flex gap-2">
@@ -57,7 +66,9 @@ export default function Home() {
       </div>
 
       <div class="max-w-screen-sm flex flex-wrap gap-2 justify-center">
-        <For each={list()}>{(item, index) => <BlockImage image={item} />}</For>
+        <For each={list()}>
+          {(item, index) => <BlockImage image={item} label={getPath(item)} />}
+        </For>
       </div>
     </div>
   );

@@ -1,0 +1,43 @@
+{ 
+	"ClassId" : "CGameItemModelTreeRoot", 
+	"Collection" : "Stadium", 
+	"SearchIn" : "game", 
+	"RootChilds" : [
+	{ "IsFolder" : true, "Name" : "LightSculpture", 
+		"Childs" : [
+		{ "IsFolder" : true, "Name" : "Spring", 
+			"Childs" : [
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Spring\\FlowerWhiteSmall.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Spring\\FlowerRedSmall.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Spring\\FlowerPinkSmall.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Spring\\FlowerOrangeSmall.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Spring\\FlowerBlueSmall.Macroblock.Gbx", }
+			]
+		}, 
+		{ "IsFolder" : true, "Name" : "Summer", 
+			"Childs" : [
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Summer\\WaveTubeBig.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Summer\\WaveBig.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Summer\\KiteBig.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Summer\\CactusBig.Macroblock.Gbx", }
+			]
+		}, 
+		{ "IsFolder" : true, "Name" : "Fall", 
+			"Childs" : [
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Fall\\MushroomSmallB.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Fall\\MushroomMediumC.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Fall\\MushroomMedium.Macroblock.Gbx", }
+			]
+		}, 
+		{ "IsFolder" : true, "Name" : "Winter", 
+			"Childs" : [
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Winter\\SnowflakeTubeMediumC.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Winter\\SnowflakeTubeMediumB.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Winter\\SnowflakeTubeMedium.Macroblock.Gbx", }, 
+			{ "Name" : "Stadium\\Macroblocks\\LightSculpture\\Winter\\SnowflakeTubeBig.Macroblock.Gbx", }
+			]
+		}
+		]
+	}
+	]
+}

@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "cross-env BASE_PATH=\"/tm-block-roulette/\" vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start"
+    "start": "vinxi start",
+    "parseinventory": "tsx scripts/parseinventory.ts"
   },
   "dependencies": {
     "@solidjs/router": "^0.14.1",
@@ -19,6 +20,9 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "json5": "^2.2.3",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.16.5"
   }
 }
