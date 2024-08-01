@@ -24,7 +24,7 @@ const BlockImage: Component<{
 };
 
 export default function Home() {
-  const [number, setNumber] = createSignal(50);
+  const [number, setNumber] = createSignal(64);
 
   const [list, setList] = createSignal<string[]>([]);
 
