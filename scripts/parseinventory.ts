@@ -1,7 +1,6 @@
 import fs from 'node:fs/promises';
 import JSON5 from 'json5';
 
-console.log("ok")
 const blockInfo = JSON5.parse(await fs.readFile("scripts/BlockInfoInventory.gbx.json", "utf8"));
 const itemInfo = JSON5.parse(await fs.readFile("scripts/ItemInventory.gbx.json", "utf8"));
 
@@ -22,5 +21,40 @@ function setPaths(info: any, dict: any = {}, prefix = "") {
 const paths = setPaths(blockInfo);
 setPaths(itemInfo, paths)
 
-fs.writeFile("src/inventory_paths.ts", `// file generated automatically with parseinventory.ts
-export const blockPaths: Record<string, string> = ${JSON.stringify(paths, null, 4)};`)
+
+
+const imageNames = await fs.readdir('public/images/')
+function findImageName(name: string): string | undefined {
+    return imageNames.find((imageName) => imageName.startsWith(name))
+}
+
+function parse(info: any, basePath: number[] = [], defaultType: ItemType = 'block'): Item {
+    const name = info.Name as string;
+    const children = info.Childs || info.RootChilds;
+    if (typeof children == 'object') {
+        return {
+            type: 'folder',
+            name: name,
+            imageName: findImageName(name),
+            path: basePath,
+            children: children.map((child: any, index: number) => parse(child, [...basePath, index + 1]))
+        }
+    } else {
+        return {
+            type: defaultType,
+            name: name,
+            imageName: findImageName(name),
+            path: basePath,
+        }
+    }
+}
+
+const blocks = parse(blockInfo, [], 'block');
+const items = parse(itemInfo, [], 'item');
+
+fs.writeFile("src/game_data.ts", `// file generated automatically with parseinventory.ts
+export const blockPaths: Record<string, string> = ${JSON.stringify(paths)};
+`)
+
+fs.writeFile("public/blocks.json", JSON.stringify(blocks));
+fs.writeFile("public/items.json", JSON.stringify(items));

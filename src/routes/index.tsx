@@ -9,7 +9,7 @@ import {
 } from "solid-js";
 import Counter from "~/components/Counter";
 import { imageList } from "~/images";
-import { blockPaths } from "~/inventory_paths";
+import { blockPaths } from "~/game_data";
 
 function getPath(imageName: string): string {
   return blockPaths[imageName.replace(/(\.EDClassic|\.Item)\.webp$/, "")];
@@ -24,7 +24,7 @@ const BlockImage: Component<{
       <div class="w-18 hover:-translate-y-1 transition-all flex flex-col items-center gap-1">
         <img
           class="bg-white rounded-md shadow-md p-1 hover:shadow-lg transition-all"
-          src={`/tm-block-roulette/images/${props.image}`}
+          src={`/images/${props.image}`}
         />
         <div class="text-center text-xs select-none">{props.label}</div>
       </div>
