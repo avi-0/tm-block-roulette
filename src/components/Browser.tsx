@@ -7,6 +7,8 @@ import {
     Show,
 } from "solid-js";
 
+import blocks from "../../public/blocks.json";
+
 const Item: Component<{
     item?: Item;
 }> = (props) => {
@@ -111,13 +113,13 @@ const Row: Component<{
 };
 
 export default function Browser() {
-    const [blocks] = createResource<Item>(async () => {
-        return await (await fetch("/blocks.json")).json();
-    });
+    // const [blocks] = createResource<Item>(async () => {
+    //     return await (await import("../../blocks.json")).json();
+    // });
 
     return (
         <div class="flex w-full flex-col justify-stretch overflow-auto rounded-md bg-white p-2 shadow-inner transition-all">
-            <Row items={blocks()?.children!} />
+            <Row items={(blocks as Item).children!} />
         </div>
     );
 }
