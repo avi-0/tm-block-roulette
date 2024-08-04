@@ -2,7 +2,7 @@
   "name": "example-with-tailwindcss",
   "type": "module",
   "scripts": {
-    "dev": "cross-env BASE_PATH=\"/tm-block-roulette/\" vinxi dev",
+    "dev": "cross-env BASE_PATH=\"/\" vinxi dev",
     "build": "vinxi build",
     "start": "vinxi start",
     "parseinventory": "tsx scripts/parseinventory.ts"
@@ -12,6 +12,7 @@
     "@solidjs/start": "^1.0.6",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.38",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "solid-js": "^1.8.18",
     "tailwindcss": "^3.4.3",
     "vinxi": "^0.4.1"
@@ -22,7 +23,14 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "json5": "^2.2.3",
+    "prettier": "3.3.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.16.5"
+  },
+  "prettier": {
+    "tabWidth": 4,
+    "plugins": [
+      "prettier-plugin-tailwindcss"
+    ]
   }
 }

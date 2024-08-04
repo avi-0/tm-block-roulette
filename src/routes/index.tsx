@@ -10,6 +10,7 @@ import {
 import Counter from "~/components/Counter";
 import { imageList } from "~/images";
 import { blockPaths } from "~/game_data";
+import Browser from "~/components/Browser";
 
 function getPath(imageName: string): string {
   return blockPaths[imageName.replace(/(\.EDClassic|\.Item)\.webp$/, "")];
@@ -46,29 +47,33 @@ export default function Home() {
   };
 
   return (
-    <div class="bg-slate-200 text-black h-screen p-4 flex flex-col items-center gap-2 overflow-auto">
-      <h1 class="font-bold text-lg text-center">Trackmania Block Roulette</h1>
+    <div class="bg-slate-200 text-black h-screen p-4 flex justify-center gap-2 overflow-auto">
+      <div class="max-w-screen-md flex-1 flex flex-col items-center gap-2 overflow-auto">
+        <h1 class="font-bold text-lg text-center">Trackmania Block Tool</h1>
 
-      <div class="flex gap-2">
-        <input
-          class="bg-white rounded-md p-2 shadow-md"
-          type="number"
-          min="0"
-          value={number()}
-          onChange={(e) => setNumber(Number(e.target.value))}
-        />
-        <button
-          class="bg-blue-500 hover:bg-blue-600 text-white rounded-md p-2 shadow-md"
-          onClick={generate}
-        >
-          Generate
-        </button>
-      </div>
+        <Browser />
 
-      <div class="max-w-screen-sm flex flex-wrap gap-2 justify-center">
-        <For each={list()}>
-          {(item, index) => <BlockImage image={item} label={getPath(item)} />}
-        </For>
+        <div class="flex gap-2">
+          <input
+            class="bg-white rounded-md p-2 shadow-md"
+            type="number"
+            min="0"
+            value={number()}
+            onChange={(e) => setNumber(Number(e.target.value))}
+          />
+          <button
+            class="bg-blue-500 hover:bg-blue-600 text-white rounded-md p-2 shadow-md"
+            onClick={generate}
+          >
+            Generate
+          </button>
+        </div>
+
+        <div class="max-w-screen-md flex flex-wrap gap-2 justify-center">
+          <For each={list()}>
+            {(item, index) => <BlockImage image={item} label={getPath(item)} />}
+          </For>
+        </div>
       </div>
     </div>
   );
