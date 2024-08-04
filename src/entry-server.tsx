@@ -1,6 +1,6 @@
 // @refresh reload
 import { createHandler, StartServer } from "@solidjs/start/server";
-import favicon from "../public/favicon.ico";
+import favicon from "/favicon.ico";
 
 export default createHandler(() => (
     <StartServer
