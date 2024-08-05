@@ -13,6 +13,8 @@ import { Button } from "./Button";
 
 const Row: Component<{
     items: Item[];
+    state: BrowserState;
+    onItemClicked?: (item: Item) => void;
 }> = (props) => {
     const [expanded, setExpanded] = createSignal<number | undefined>(undefined);
 
@@ -25,17 +27,30 @@ const Row: Component<{
     return (
         <div class="flex flex-col items-start gap-1">
             <div class="flex flex-wrap gap-1">
-                <For each={props.items}>
+                <For
+                    each={props.items.filter(
+                        (item) =>
+                            props.state.showHidden ||
+                            !props.state.hidden[item.fullName],
+                    )}
+                >
                     {(item, index) => {
+                        const hidden = () => props.state.hidden[item.fullName];
+
                         const color = () =>
-                            expanded() == index()
-                                ? "bg-yellow-400"
-                                : item.type == "folder"
-                                  ? "bg-yellow-200"
-                                  : "bg-slate-200";
+                            hidden()
+                                ? "bg-red-400"
+                                : expanded() == index()
+                                  ? "bg-yellow-400"
+                                  : item.type == "folder"
+                                    ? "bg-yellow-200"
+                                    : "bg-slate-200";
 
                         const onClick = () => {
-                            if (
+                            if (props.onItemClicked != undefined) {
+                                console.log(props.onItemClicked);
+                                props.onItemClicked(item);
+                            } else if (
                                 item.type == "folder" &&
                                 item.children != undefined
                             ) {
@@ -74,19 +89,26 @@ const Row: Component<{
                     props.items[expanded()!] != undefined
                 }
             >
-                <Row items={props.items[expanded()!].children || []} />
+                <Row
+                    items={props.items[expanded()!].children || []}
+                    state={props.state}
+                    onItemClicked={props.onItemClicked}
+                />
             </Show>
         </div>
     );
 };
 
-export default function Browser() {
+export const Browser: Component<{
+    onItemClicked?: (item: Item) => void;
+    state: BrowserState;
+}> = (props) => {
     const [tab, setTab] = createSignal<"blocks" | "items">("blocks");
 
     const root = () => (tab() == "blocks" ? blocks : items) as Item;
 
     return (
-        <div class="flex w-full flex-col justify-stretch gap-1 overflow-auto rounded-md bg-white p-2 shadow-inner transition-all">
+        <div class="flex w-full flex-1 flex-col justify-stretch gap-1 overflow-auto rounded-md bg-white p-2 shadow-inner transition-all">
             <div class="flex gap-1">
                 <Button
                     filled={tab() == "blocks"}
@@ -102,7 +124,11 @@ export default function Browser() {
                 </Button>
             </div>
 
-            <Row items={root().children!} />
+            <Row
+                items={root().children!}
+                state={props.state}
+                onItemClicked={props.onItemClicked}
+            />
         </div>
     );
-}
+};

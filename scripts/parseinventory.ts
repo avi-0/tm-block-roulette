@@ -49,7 +49,7 @@ function parse(
 ): Item {
     const name = info.Name as string;
     const children = info.Childs || info.RootChilds;
-    const fullName = info.Name ? `${prefix}${name}` : "";
+    const fullName = info.Name ? `${prefix}${name}` : `${prefix}`;
 
     if (typeof children == "object") {
         const childPrefix = fullName != "" ? fullName + "/" : "";
@@ -76,8 +76,8 @@ function parse(
     }
 }
 
-const blocks = parse(blockInfo, [], "block");
-const items = parse(itemInfo, [], "item");
+const blocks = parse(blockInfo, [], "block", "blocks");
+const items = parse(itemInfo, [], "item", "items");
 
 // remove dev folders
 blocks.children?.pop();

@@ -1,83 +1,65 @@
-import { A } from "@solidjs/router";
-import {
-    Component,
-    createMemo,
-    createResource,
-    createSignal,
-    For,
-    Suspense,
-} from "solid-js";
-import Counter from "~/components/Counter";
-import { imageList } from "~/images";
-import { blockPaths } from "~/game_data";
-import Browser from "~/components/Browser";
-
-function getPath(imageName: string): string {
-    return blockPaths[imageName.replace(/(\.EDClassic|\.Item)\.webp$/, "")];
-}
-
-const BlockImage: Component<{
-    image: string;
-    label?: string;
-}> = (props) => {
-    return (
-        <Suspense>
-            <div class="w-18 flex flex-col items-center gap-1 transition-all hover:-translate-y-1">
-                <img
-                    class="rounded-md bg-white p-1 shadow-md transition-all hover:shadow-lg"
-                    src={`${process.env.BASE_PATH}/images/${props.image}`}
-                />
-                <div class="select-none text-center text-xs">{props.label}</div>
-            </div>
-        </Suspense>
-    );
-};
+import { BsEye, BsX } from "solid-icons/bs";
+import { FaRegularEye } from "solid-icons/fa";
+import { createEffect, createMemo, createSignal } from "solid-js";
+import { createStore } from "solid-js/store";
+import { Browser } from "~/components/Browser";
+import { Button } from "~/components/Button";
 
 export default function Home() {
-    // const [number, setNumber] = createSignal(64);
+    const [tool, setTool] = createSignal<"view" | "hide">("view");
 
-    // const [list, setList] = createSignal<string[]>([]);
+    const [store, setStore] = createStore<BrowserState>({
+        hidden: {},
+        showHidden: false,
+    });
 
-    // const generate = () => {
-    //     setList(
-    //         Array.from({ length: number() }, () => {
-    //             return imageList[Math.floor(Math.random() * imageList.length)];
-    //         }).toSorted(),
-    //     );
-    // };
+    createEffect(() => {
+        setStore("showHidden", tool() != "view");
+    });
+
+    const onItemClicked = createMemo(() => {
+        if (tool() == "hide") {
+            return (item: Item) => {
+                console.log(item.fullName);
+                setStore("hidden", item.fullName, !store.hidden[item.fullName]);
+                console.log(store.hidden[item.fullName]);
+            };
+        } else {
+            return undefined;
+        }
+    });
 
     return (
         <div class="flex h-screen justify-center gap-2 overflow-auto bg-slate-200 p-4 text-black">
-            <div class="flex max-w-screen-md flex-1 flex-col items-center gap-2 overflow-auto">
+            <div class="flex max-w-screen-lg flex-1 flex-col items-center gap-2 overflow-auto">
                 <h1 class="text-center text-lg font-bold">
                     Trackmania Block Tool
                 </h1>
 
-                <Browser />
+                <div class="flex gap-2 self-stretch">
+                    <Browser state={store} onItemClicked={onItemClicked()} />
 
-                {/* <div class="flex gap-2">
-                    <input
-                        class="rounded-md bg-white p-2 shadow-md"
-                        type="number"
-                        min="0"
-                        value={number()}
-                        onChange={(e) => setNumber(Number(e.target.value))}
-                    />
-                    <button
-                        class="rounded-md bg-blue-500 p-2 text-white shadow-md hover:bg-blue-600"
-                        onClick={generate}
-                    >
-                        Generate
-                    </button>
+                    <div class="flex w-48 flex-col items-start gap-1">
+                        <Button
+                            filled={tool() == "view"}
+                            onClick={() => setTool("view")}
+                        >
+                            <div class="flex items-center gap-1">
+                                <BsEye />
+                                View
+                            </div>
+                        </Button>
+                        <Button
+                            filled={tool() == "hide"}
+                            onClick={() => setTool("hide")}
+                        >
+                            <div class="flex items-center gap-1">
+                                <BsX />
+                                Hide
+                            </div>
+                        </Button>
+                    </div>
                 </div>
-
-                <div class="flex max-w-screen-md flex-wrap justify-center gap-2">
-                    <For each={list()}>
-                        {(item, index) => (
-                            <BlockImage image={item} label={getPath(item)} />
-                        )}
-                    </For>
-                </div> */}
             </div>
         </div>
     );
