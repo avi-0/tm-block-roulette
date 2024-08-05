@@ -25,7 +25,7 @@ const Item: Component<{
         <div class="flex flex-col items-start gap-1 transition-all">
             <img
                 class={`w-18 rounded-md ${color()} p-1 shadow-md transition-all hover:shadow-lg`}
-                src={`${import.meta.env.SERVER_BASE_URL}/images/${props.item?.imageName}`}
+                src={`${import.meta.env.BASE_URL}/images/${props.item?.imageName}`}
                 onClick={() => setExpand((value) => !value)}
             />
             <div class="select-none text-center text-xs">
