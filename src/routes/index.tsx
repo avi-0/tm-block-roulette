@@ -34,17 +34,17 @@ const BlockImage: Component<{
 };
 
 export default function Home() {
-    const [number, setNumber] = createSignal(64);
+    // const [number, setNumber] = createSignal(64);
 
-    const [list, setList] = createSignal<string[]>([]);
+    // const [list, setList] = createSignal<string[]>([]);
 
-    const generate = () => {
-        setList(
-            Array.from({ length: number() }, () => {
-                return imageList[Math.floor(Math.random() * imageList.length)];
-            }).toSorted(),
-        );
-    };
+    // const generate = () => {
+    //     setList(
+    //         Array.from({ length: number() }, () => {
+    //             return imageList[Math.floor(Math.random() * imageList.length)];
+    //         }).toSorted(),
+    //     );
+    // };
 
     return (
         <div class="flex h-screen justify-center gap-2 overflow-auto bg-slate-200 p-4 text-black">
@@ -55,7 +55,7 @@ export default function Home() {
 
                 <Browser />
 
-                <div class="flex gap-2">
+                {/* <div class="flex gap-2">
                     <input
                         class="rounded-md bg-white p-2 shadow-md"
                         type="number"
@@ -77,7 +77,7 @@ export default function Home() {
                             <BlockImage image={item} label={getPath(item)} />
                         )}
                     </For>
-                </div>
+                </div> */}
             </div>
         </div>
     );

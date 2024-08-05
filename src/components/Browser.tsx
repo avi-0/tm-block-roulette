@@ -24,7 +24,7 @@ const Row: Component<{
 
     return (
         <div class="flex flex-col items-start gap-1">
-            <div class="flex gap-1">
+            <div class="flex flex-wrap gap-1">
                 <For each={props.items}>
                     {(item, index) => {
                         const color = () =>
