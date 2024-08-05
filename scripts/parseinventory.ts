@@ -45,12 +45,16 @@ function parse(
     info: any,
     basePath: number[] = [],
     defaultType: ItemType = "block",
+    prefix: string = "",
 ): Item {
     const name = info.Name as string;
     const children = info.Childs || info.RootChilds;
+    const fullName = info.Name ? `${prefix}${name}` : "";
+
     if (typeof children == "object") {
+        const childPrefix = fullName != "" ? fullName + "/" : "";
         const childrenParsed = children.map((child: any, index: number) =>
-            parse(child, [...basePath, index + 1]),
+            parse(child, [...basePath, index + 1], defaultType, childPrefix),
         );
 
         return {
@@ -58,6 +62,7 @@ function parse(
             name: name,
             imageName: childrenParsed[0]?.imageName,
             path: basePath,
+            fullName: fullName + "/",
             children: childrenParsed,
         };
     } else {
@@ -66,6 +71,7 @@ function parse(
             name: name,
             imageName: findImageName(name),
             path: basePath,
+            fullName: fullName,
         };
     }
 }
@@ -86,4 +92,4 @@ export const blockPaths: Record<string, string> = ${JSON.stringify(paths)};
 );
 
 fs.writeFile("public/blocks.json", JSON.stringify(blocks, null, 4));
-fs.writeFile("public/items.json", JSON.stringify(items));
+fs.writeFile("public/items.json", JSON.stringify(items, null, 4));
