@@ -25,10 +25,19 @@ function setPaths(info: any, dict: any = {}, prefix = "") {
 const paths = setPaths(blockInfo);
 setPaths(itemInfo, paths);
 
+const imageExceptions: Record<string, string> = {
+    RoadIceDiagLeftWithWallStraight:
+        "RoadIceWithWallDiagLeftStraight.EDClassic.webp",
+    RoadIceDiagRightWithWallStraight:
+        "RoadIceWithWallDiagRightStraight.EDClassic.webp",
+};
+
 const imageNames = await fs.readdir("public/images/");
 function findImageName(name: string): string | undefined {
-    return imageNames.find((imageName) =>
-        RegExp("^" + name + "\\.", "i").test(imageName),
+    return (
+        imageNames.find((imageName) =>
+            RegExp("^" + name + "\\.", "i").test(imageName),
+        ) || imageExceptions[name]
     );
 }
 
@@ -64,8 +73,10 @@ function parse(
 const blocks = parse(blockInfo, [], "block");
 const items = parse(itemInfo, [], "item");
 
+// remove dev folders
 blocks.children?.pop();
 items.children?.pop();
+items.children![0].children?.pop();
 
 fs.writeFile(
     "src/game_data.ts",

@@ -11738,6 +11738,7 @@
                         {
                             "type": "folder",
                             "name": "Diag",
+                            "imageName": "RoadIceWithWallDiagLeftStraight.EDClassic.webp",
                             "path": [
                                 1,
                                 4,
@@ -11747,6 +11748,7 @@
                                 {
                                     "type": "folder",
                                     "name": "Straight",
+                                    "imageName": "RoadIceWithWallDiagLeftStraight.EDClassic.webp",
                                     "path": [
                                         1,
                                         4,
@@ -11757,6 +11759,7 @@
                                         {
                                             "type": "folder",
                                             "name": "WithWall",
+                                            "imageName": "RoadIceWithWallDiagLeftStraight.EDClassic.webp",
                                             "path": [
                                                 1,
                                                 4,
@@ -11768,6 +11771,7 @@
                                                 {
                                                     "type": "block",
                                                     "name": "RoadIceDiagLeftWithWallStraight",
+                                                    "imageName": "RoadIceWithWallDiagLeftStraight.EDClassic.webp",
                                                     "path": [
                                                         1,
                                                         4,
@@ -11780,6 +11784,7 @@
                                                 {
                                                     "type": "block",
                                                     "name": "RoadIceDiagRightWithWallStraight",
+                                                    "imageName": "RoadIceWithWallDiagRightStraight.EDClassic.webp",
                                                     "path": [
                                                         1,
                                                         4,
