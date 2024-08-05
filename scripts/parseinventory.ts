@@ -65,6 +65,7 @@ const blocks = parse(blockInfo, [], "block");
 const items = parse(itemInfo, [], "item");
 
 blocks.children?.pop();
+items.children?.pop();
 
 fs.writeFile(
     "src/game_data.ts",
