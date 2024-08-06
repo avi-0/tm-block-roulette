@@ -248,7 +248,7 @@ export default function Home() {
                     <ul class="list-inside list-disc">
                         <li>
                             <b>Hide</b> &mdash; click to hide/unhide item or
-                            folder. Randomizer will not include hidded items.
+                            folder. Randomizer will not include hidden items.
                         </li>
                         <li>
                             <b>Group</b> &mdash; click to mark folder as group.
