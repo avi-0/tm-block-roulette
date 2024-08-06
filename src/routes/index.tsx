@@ -1,8 +1,7 @@
 import { BsEye, BsX } from "solid-icons/bs";
-import { FaRegularEye } from "solid-icons/fa";
-import { createEffect, createMemo, createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Browser, BrowserParams } from "~/components/Browser";
+import { Browser, BrowserState } from "~/components/Browser";
 import { Button } from "~/components/Button";
 
 export default function Home() {
@@ -12,23 +11,24 @@ export default function Home() {
         hidden: {},
     });
 
-    const onItemClicked = createMemo(() => {
-        if (tool() == "hide") {
-            return (item: Item) => {
-                console.log(item.fullName);
-                setStore("hidden", item.fullName, !store.hidden[item.fullName]);
-                console.log(store.hidden[item.fullName]);
+    const params = () => {
+        if (tool() == "view") {
+            return {
+                onItemClicked: undefined,
+                filter: (item: Item) => !store.hidden[item.fullName],
             };
         } else {
-            return undefined;
+            return {
+                onItemClicked: (item: Item) => {
+                    setStore(
+                        "hidden",
+                        item.fullName,
+                        !store.hidden[item.fullName],
+                    );
+                },
+                filter: undefined,
+            };
         }
-    });
-
-    const params = () => {
-        return {
-            onItemClicked: onItemClicked(),
-            showHidden: tool() != "view",
-        };
     };
 
     return (

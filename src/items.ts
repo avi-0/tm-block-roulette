@@ -8,7 +8,3 @@ type Item = {
     path: number[];
     children?: Item[];
 };
-
-type BrowserState = {
-    hidden: Record<string, boolean>;
-};

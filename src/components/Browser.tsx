@@ -11,9 +11,13 @@ import blocks from "../../public/blocks.json";
 import items from "../../public/items.json";
 import { Button } from "./Button";
 
+export type BrowserState = {
+    hidden: Record<string, boolean>;
+};
+
 export type BrowserParams = {
     onItemClicked?: (item: Item) => void;
-    showHidden: boolean;
+    filter?: (item: Item) => boolean;
 };
 
 const Row: Component<{
@@ -34,9 +38,7 @@ const Row: Component<{
             <div class="flex flex-wrap gap-1">
                 <For
                     each={props.items.filter(
-                        (item) =>
-                            props.params.showHidden ||
-                            !props.state.hidden[item.fullName],
+                        props.params.filter || (() => true),
                     )}
                 >
                     {(item, index) => {
