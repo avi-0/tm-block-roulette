@@ -2,7 +2,7 @@ import { BsEye, BsX } from "solid-icons/bs";
 import { FaRegularEye } from "solid-icons/fa";
 import { createEffect, createMemo, createSignal } from "solid-js";
 import { createStore } from "solid-js/store";
-import { Browser } from "~/components/Browser";
+import { Browser, BrowserParams } from "~/components/Browser";
 import { Button } from "~/components/Button";
 
 export default function Home() {
@@ -10,11 +10,6 @@ export default function Home() {
 
     const [store, setStore] = createStore<BrowserState>({
         hidden: {},
-        showHidden: false,
-    });
-
-    createEffect(() => {
-        setStore("showHidden", tool() != "view");
     });
 
     const onItemClicked = createMemo(() => {
@@ -29,6 +24,13 @@ export default function Home() {
         }
     });
 
+    const params = () => {
+        return {
+            onItemClicked: onItemClicked(),
+            showHidden: tool() != "view",
+        };
+    };
+
     return (
         <div class="flex h-screen justify-center gap-2 overflow-auto bg-slate-200 p-4 text-black">
             <div class="flex max-w-screen-lg flex-1 flex-col items-center gap-2 overflow-auto">
@@ -37,7 +39,7 @@ export default function Home() {
                 </h1>
 
                 <div class="flex gap-2 self-stretch">
-                    <Browser state={store} onItemClicked={onItemClicked()} />
+                    <Browser state={store} params={params()} />
 
                     <div class="flex flex-col items-center gap-1">
                         <Button

@@ -11,5 +11,4 @@ type Item = {
 
 type BrowserState = {
     hidden: Record<string, boolean>;
-    showHidden: boolean;
 };

@@ -11,10 +11,15 @@ import blocks from "../../public/blocks.json";
 import items from "../../public/items.json";
 import { Button } from "./Button";
 
+export type BrowserParams = {
+    onItemClicked?: (item: Item) => void;
+    showHidden: boolean;
+};
+
 const Row: Component<{
     items: Item[];
     state: BrowserState;
-    onItemClicked?: (item: Item) => void;
+    params: BrowserParams;
 }> = (props) => {
     const [expanded, setExpanded] = createSignal<number | undefined>(undefined);
 
@@ -30,7 +35,7 @@ const Row: Component<{
                 <For
                     each={props.items.filter(
                         (item) =>
-                            props.state.showHidden ||
+                            props.params.showHidden ||
                             !props.state.hidden[item.fullName],
                     )}
                 >
@@ -47,8 +52,8 @@ const Row: Component<{
                                     : "bg-slate-200";
 
                         const onClick = () => {
-                            if (props.onItemClicked != undefined) {
-                                props.onItemClicked(item);
+                            if (props.params.onItemClicked != undefined) {
+                                props.params.onItemClicked(item);
                             } else if (
                                 item.type == "folder" &&
                                 item.children != undefined
@@ -91,7 +96,7 @@ const Row: Component<{
                 <Row
                     items={props.items[expanded()!].children || []}
                     state={props.state}
-                    onItemClicked={props.onItemClicked}
+                    params={props.params}
                 />
             </Show>
         </div>
@@ -99,8 +104,8 @@ const Row: Component<{
 };
 
 export const Browser: Component<{
-    onItemClicked?: (item: Item) => void;
     state: BrowserState;
+    params: BrowserParams;
 }> = (props) => {
     const [tab, setTab] = createSignal<"blocks" | "items">("blocks");
 
@@ -126,7 +131,7 @@ export const Browser: Component<{
             <Row
                 items={root().children!}
                 state={props.state}
-                onItemClicked={props.onItemClicked}
+                params={props.params}
             />
         </div>
     );
