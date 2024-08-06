@@ -27,6 +27,18 @@ function contains(item: Item, cond: (item: Item) => boolean): boolean {
     return false;
 }
 
+function isHidden(item: Item, hidden: Record<string, boolean>): boolean {
+    for (let path in hidden) {
+        if (hidden[path]) {
+            if (item.fullName.startsWith(path)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 const Randomizer: Component<{
     state: BrowserState;
     onRandomized: (items: Item[]) => void;
@@ -44,7 +56,7 @@ const Randomizer: Component<{
             items.push(item);
         }
 
-        items = items.filter((item) => !props.state.hidden[item.fullName]);
+        items = items.filter((item) => !isHidden(item, props.state.hidden));
 
         const selectedItems: Item[] = [];
         for (let i = 0; i < number(); i++) {
