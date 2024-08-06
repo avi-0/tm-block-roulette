@@ -25,7 +25,7 @@ const Row: Component<{
     });
 
     return (
-        <div class="flex flex-col items-start gap-1">
+        <div class="flex flex-col items-start gap-3">
             <div class="flex flex-wrap gap-1">
                 <For
                     each={props.items.filter(
@@ -48,7 +48,6 @@ const Row: Component<{
 
                         const onClick = () => {
                             if (props.onItemClicked != undefined) {
-                                console.log(props.onItemClicked);
                                 props.onItemClicked(item);
                             } else if (
                                 item.type == "folder" &&

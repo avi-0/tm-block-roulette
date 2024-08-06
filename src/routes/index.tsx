@@ -39,7 +39,7 @@ export default function Home() {
                 <div class="flex gap-2 self-stretch">
                     <Browser state={store} onItemClicked={onItemClicked()} />
 
-                    <div class="flex w-48 flex-col items-start gap-1">
+                    <div class="flex flex-col items-center gap-1">
                         <Button
                             filled={tool() == "view"}
                             onClick={() => setTool("view")}
@@ -49,6 +49,8 @@ export default function Home() {
                                 View
                             </div>
                         </Button>
+                        <hr class="divide-y-2 self-stretch border-slate-400" />
+                        <div class="text-sm text-slate-500">Tools</div>
                         <Button
                             filled={tool() == "hide"}
                             onClick={() => setTool("hide")}
