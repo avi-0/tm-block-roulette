@@ -160,11 +160,13 @@ export default function Home() {
         } else if (tool() == "group") {
             return {
                 onItemClicked: (item: Item) => {
-                    setStore(
-                        "grouped",
-                        item.fullName,
-                        !store.grouped[item.fullName],
-                    );
+                    if (item.type == "folder") {
+                        setStore(
+                            "grouped",
+                            item.fullName,
+                            !store.grouped[item.fullName],
+                        );
+                    }
                 },
                 filter: undefined,
             };
@@ -234,6 +236,27 @@ export default function Home() {
                         </IconButton>
                     </div>
                 </div>
+
+                <details class="space-y-2 self-start">
+                    <summary>help</summary>
+                    <p>
+                        This tool lets you browse Trackmania 2020's current
+                        blocks and items, as well as generate a random
+                        selection.
+                    </p>
+                    <p>Tools:</p>
+                    <ul class="list-inside list-disc">
+                        <li>
+                            <b>Hide</b> &mdash; click to hide/unhide item or
+                            folder.
+                        </li>
+                        <li>
+                            <b>Group</b> &mdash; click to mark folder as group.
+                            Randomizer will treat grouped folders as a single
+                            item.
+                        </li>
+                    </ul>
+                </details>
             </div>
         </div>
     );
