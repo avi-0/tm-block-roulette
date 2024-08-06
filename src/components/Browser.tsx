@@ -13,6 +13,7 @@ import { Button } from "./Button";
 
 export type BrowserState = {
     hidden: Record<string, boolean>;
+    grouped: Record<string, boolean>;
 };
 
 export type BrowserParams = {
@@ -43,15 +44,19 @@ const Row: Component<{
                 >
                     {(item, index) => {
                         const hidden = () => props.state.hidden[item.fullName];
+                        const grouped = () =>
+                            props.state.grouped[item.fullName];
 
                         const color = () =>
                             hidden()
-                                ? "bg-red-400"
-                                : expanded() == item
-                                  ? "bg-yellow-400"
-                                  : item.type == "folder"
-                                    ? "bg-yellow-200"
-                                    : "bg-slate-200";
+                                ? "bg-red-300 hover:bg-red-400"
+                                : grouped()
+                                  ? "bg-cyan-300 hover:bg-cyan-400"
+                                  : expanded() == item
+                                    ? "bg-yellow-400"
+                                    : item.type == "folder"
+                                      ? "bg-yellow-200"
+                                      : "bg-slate-200";
 
                         const onClick = () => {
                             if (props.params.onItemClicked != undefined) {

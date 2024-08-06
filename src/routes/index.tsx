@@ -1,4 +1,4 @@
-import { BsDice3, BsEye, BsX } from "solid-icons/bs";
+import { BsBox, BsDice3, BsEye, BsX } from "solid-icons/bs";
 import { Component, createSignal, Match, Switch } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Browser, BrowserState } from "~/components/Browser";
@@ -7,13 +7,16 @@ import { IconButton } from "~/components/IconButton";
 import BLOCKS from "../../public/blocks.json";
 import ITEMS from "../../public/items.json";
 
-function* getLeaves(item: Item): Generator<Item> {
-    if (item.children) {
-        for (let child of item.children) {
-            yield* getLeaves(child);
-        }
-    } else if (item.type != "folder") {
+function* getLeaves(
+    item: Item,
+    grouped?: Record<string, boolean>,
+): Generator<Item> {
+    if (item.type != "folder" || grouped?.[item.fullName]) {
         yield item;
+    } else if (item.children) {
+        for (let child of item.children) {
+            yield* getLeaves(child, grouped);
+        }
     }
 }
 
@@ -49,14 +52,15 @@ const Randomizer: Component<{
         e.preventDefault();
 
         let items: Item[] = [];
-        for (let item of getLeaves(BLOCKS as Item)) {
+        for (let item of getLeaves(BLOCKS as Item, props.state.grouped)) {
             items.push(item);
         }
-        for (let item of getLeaves(ITEMS as Item)) {
+        for (let item of getLeaves(ITEMS as Item, props.state.grouped)) {
             items.push(item);
         }
 
         items = items.filter((item) => !isHidden(item, props.state.hidden));
+        console.log(items);
 
         const selectedItems: Item[] = [];
         for (let i = 0; i < number(); i++) {
@@ -66,10 +70,11 @@ const Randomizer: Component<{
 
             const randomIndex = Math.floor(Math.random() * items.length);
             const [item] = items.splice(randomIndex, 1);
-            selectedItems.push(item);
+            for (let child of getLeaves(item)) {
+                selectedItems.push(child);
+            }
         }
 
-        console.log(selectedItems);
         props.onRandomized(selectedItems);
     };
 
@@ -91,12 +96,13 @@ const Randomizer: Component<{
 };
 
 export default function Home() {
-    const [tool, setTool] = createSignal<"view" | "hide" | "randomizer">(
-        "view",
-    );
+    const [tool, setTool] = createSignal<
+        "view" | "hide" | "randomizer" | "group"
+    >("view");
 
     const [store, setStore] = createStore<BrowserState>({
         hidden: {},
+        grouped: {},
     });
 
     const [randomizerSelected, setRandomizerSelected] = createSignal<Item[]>(
@@ -108,12 +114,7 @@ export default function Home() {
     };
 
     const params = () => {
-        if (tool() == "view") {
-            return {
-                onItemClicked: undefined,
-                filter: (item: Item) => !store.hidden[item.fullName],
-            };
-        } else if (tool() == "randomizer") {
+        if (tool() == "randomizer") {
             return {
                 onItemClicked: undefined,
                 filter: (item: Item) =>
@@ -121,7 +122,7 @@ export default function Home() {
                         randomizerSelected().includes(child),
                     ),
             };
-        } else {
+        } else if (tool() == "hide") {
             return {
                 onItemClicked: (item: Item) => {
                     setStore(
@@ -131,6 +132,22 @@ export default function Home() {
                     );
                 },
                 filter: undefined,
+            };
+        } else if (tool() == "group") {
+            return {
+                onItemClicked: (item: Item) => {
+                    setStore(
+                        "grouped",
+                        item.fullName,
+                        !store.grouped[item.fullName],
+                    );
+                },
+                filter: undefined,
+            };
+        } else {
+            return {
+                onItemClicked: undefined,
+                filter: (item: Item) => !store.hidden[item.fullName],
             };
         }
     };
@@ -182,6 +199,14 @@ export default function Home() {
                             icon={<BsX />}
                         >
                             Hide
+                        </IconButton>
+
+                        <IconButton
+                            filled={tool() == "group"}
+                            onClick={() => setTool("group")}
+                            icon={<BsBox />}
+                        >
+                            Group
                         </IconButton>
                     </div>
                 </div>
