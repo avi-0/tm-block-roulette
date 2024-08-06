@@ -144,7 +144,7 @@ export default function Home() {
                 filter: (item: Item) =>
                     contains(item, (child) =>
                         randomizerSelected().includes(child),
-                    ),
+                    ) && !store.hidden[item.fullName],
             };
         } else if (tool() == "hide") {
             return {
