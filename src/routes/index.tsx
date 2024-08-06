@@ -46,17 +46,23 @@ const Randomizer: Component<{
     state: BrowserState;
     onRandomized: (items: Item[]) => void;
 }> = (props) => {
+    const [includeBlocks, setIncludeBlocks] = createSignal(true);
+    const [includeItems, setIncludeItems] = createSignal(true);
     const [number, setNumber] = createSignal(0);
 
     const onSubmit = (e: Event) => {
         e.preventDefault();
 
         let items: Item[] = [];
-        for (let item of getLeaves(BLOCKS as Item, props.state.grouped)) {
-            items.push(item);
+        if (includeBlocks()) {
+            for (let item of getLeaves(BLOCKS as Item, props.state.grouped)) {
+                items.push(item);
+            }
         }
-        for (let item of getLeaves(ITEMS as Item, props.state.grouped)) {
-            items.push(item);
+        if (includeItems()) {
+            for (let item of getLeaves(ITEMS as Item, props.state.grouped)) {
+                items.push(item);
+            }
         }
 
         items = items.filter((item) => !isHidden(item, props.state.hidden));
@@ -81,7 +87,25 @@ const Randomizer: Component<{
     return (
         <form class="flex flex-col gap-1" onSubmit={onSubmit}>
             <label class="text-sm text-slate-500">
-                <p class="pb-1">Number of blocks</p>
+                <input
+                    class="mr-1 inline-block"
+                    type="checkbox"
+                    checked={includeBlocks()}
+                    onChange={(e) => setIncludeBlocks(e.target.checked)}
+                />
+                Blocks
+            </label>
+            <label class="text-sm text-slate-500">
+                <input
+                    class="mr-1 inline-block"
+                    type="checkbox"
+                    checked={includeItems()}
+                    onChange={(e) => setIncludeItems(e.target.checked)}
+                />
+                Items
+            </label>
+            <label class="text-sm text-slate-500">
+                <p class="pb-1">Number of blocks/items</p>
                 <input
                     class="rounded-md p-1 text-black shadow-inner"
                     type="number"
