@@ -25,7 +25,7 @@ const Row: Component<{
     state: BrowserState;
     params: BrowserParams;
 }> = (props) => {
-    const [expanded, setExpanded] = createSignal<number | undefined>(undefined);
+    const [expanded, setExpanded] = createSignal<Item | undefined>(undefined);
 
     createEffect(() => {
         if (props.items) {
@@ -47,7 +47,7 @@ const Row: Component<{
                         const color = () =>
                             hidden()
                                 ? "bg-red-400"
-                                : expanded() == index()
+                                : expanded() == item
                                   ? "bg-yellow-400"
                                   : item.type == "folder"
                                     ? "bg-yellow-200"
@@ -60,10 +60,10 @@ const Row: Component<{
                                 item.type == "folder" &&
                                 item.children != undefined
                             ) {
-                                if (index() == expanded()) {
+                                if (item == expanded()) {
                                     setExpanded(undefined);
                                 } else {
-                                    setExpanded(index());
+                                    setExpanded(item);
                                 }
                             }
                         };
@@ -73,7 +73,7 @@ const Row: Component<{
                                 item.type == "folder" &&
                                 item.children != undefined
                             ) {
-                                setExpanded(index());
+                                setExpanded(item);
                             }
                         };
 
@@ -89,14 +89,9 @@ const Row: Component<{
                 </For>
             </div>
 
-            <Show
-                when={
-                    expanded() != undefined &&
-                    props.items[expanded()!] != undefined
-                }
-            >
+            <Show when={expanded() != undefined}>
                 <Row
-                    items={props.items[expanded()!].children || []}
+                    items={expanded()!.children || []}
                     state={props.state}
                     params={props.params}
                 />

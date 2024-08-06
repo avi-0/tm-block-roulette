@@ -1,15 +1,68 @@
 import { BsDice3, BsEye, BsX } from "solid-icons/bs";
-import { createSignal, Match, Switch } from "solid-js";
+import { Component, createSignal, Match, Switch } from "solid-js";
 import { createStore } from "solid-js/store";
 import { Browser, BrowserState } from "~/components/Browser";
 import { Button } from "~/components/Button";
 import { IconButton } from "~/components/IconButton";
+import BLOCKS from "../../public/blocks.json";
+import ITEMS from "../../public/items.json";
 
-const RandomizerOptions = () => {
+function* getLeaves(item: Item): Generator<Item> {
+    if (item.children) {
+        for (let child of item.children) {
+            yield* getLeaves(child);
+        }
+    } else if (item.type != "folder") {
+        yield item;
+    }
+}
+
+function contains(item: Item, cond: (item: Item) => boolean): boolean {
+    for (let leaf of getLeaves(item)) {
+        if (cond(leaf)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+const Randomizer: Component<{
+    state: BrowserState;
+    onRandomized: (items: Item[]) => void;
+}> = (props) => {
     const [number, setNumber] = createSignal(0);
 
+    const onSubmit = (e: Event) => {
+        e.preventDefault();
+
+        let items: Item[] = [];
+        for (let item of getLeaves(BLOCKS as Item)) {
+            items.push(item);
+        }
+        for (let item of getLeaves(ITEMS as Item)) {
+            items.push(item);
+        }
+
+        items = items.filter((item) => !props.state.hidden[item.fullName]);
+
+        const selectedItems: Item[] = [];
+        for (let i = 0; i < number(); i++) {
+            if (items.length < 1) {
+                break;
+            }
+
+            const randomIndex = Math.floor(Math.random() * items.length);
+            const [item] = items.splice(randomIndex, 1);
+            selectedItems.push(item);
+        }
+
+        console.log(selectedItems);
+        props.onRandomized(selectedItems);
+    };
+
     return (
-        <form class="flex flex-col gap-1">
+        <form class="flex flex-col gap-1" onSubmit={onSubmit}>
             <label class="text-sm text-slate-500">
                 <p class="pb-1">Number of blocks</p>
                 <input
@@ -34,6 +87,14 @@ export default function Home() {
         hidden: {},
     });
 
+    const [randomizerSelected, setRandomizerSelected] = createSignal<Item[]>(
+        [],
+    );
+    const onRandomized = (items: Item[]) => {
+        console.log(items);
+        setRandomizerSelected(items);
+    };
+
     const params = () => {
         if (tool() == "view") {
             return {
@@ -43,7 +104,10 @@ export default function Home() {
         } else if (tool() == "randomizer") {
             return {
                 onItemClicked: undefined,
-                filter: undefined,
+                filter: (item: Item) =>
+                    contains(item, (child) =>
+                        randomizerSelected().includes(child),
+                    ),
             };
         } else {
             return {
@@ -71,7 +135,10 @@ export default function Home() {
 
                     <Switch>
                         <Match when={tool() == "randomizer"}>
-                            <RandomizerOptions />
+                            <Randomizer
+                                state={store}
+                                onRandomized={onRandomized}
+                            />
                         </Match>
                     </Switch>
 
